@@ -22,7 +22,7 @@ let correctAnswers = [
 "Trajectory",
 "3"
 ];
-let candidateAnswers = ["", "", "", "", ""];
+let candidateAnswers = [];
 
 function askForName() {
 // 1.1b: Ask for candidate's name //
@@ -35,7 +35,7 @@ function askQuestions() {
   // 1.2b: Ask candidate the question and assign the response as candidateAnswer //
   // 2: modify your quiz app to ask 5 questions //
   for (qNum = 0; qNum < questions.length; qNum++) {
-    candidateAnswers[qNum] = input.question(questions[qNum]);
+    candidateAnswers.push(input.question(questions[qNum]));
   }
 }
 
@@ -46,27 +46,26 @@ function gradeQuiz(candidateAnswers) {
   let numberCorrect = 0;
 
   for (qNum = 0; qNum < questions.length; qNum++) {
-    let right = "CORRECT!";
-    let wrong = "INCORRECT.";
+    let right = "> CORRECT";
+    let wrong = "> INCORRECT";
     let isCorrect;
     if (candidateAnswers[qNum].toLowerCase() === correctAnswers[qNum].toLowerCase()) { 
       isCorrect = right; 
       numberCorrect++;
     } else isCorrect = wrong;
-    console.log(`\nYour Answer: ${candidateAnswers[qNum]} .......... ${isCorrect}`);
-    console.log(`Correct Answer: ${correctAnswers[qNum]}`);
+    console.log(`\n${qNum+1}) ${questions[qNum]}\nYour Answer: ${candidateAnswers[qNum]} ${isCorrect}\nCorrect Answer: ${correctAnswers[qNum]}`);
   }
 
+  
   grade = (numberCorrect / correctAnswers.length) * 100;
-  let an = "";
-  let pass = "Congratulations, you PASSED! :)";
-  let fail = "Sorry, you FAILED. :(";
-  let message = "";
-  if (grade === 80) { an = "n"; }
-    if (grade < 80) {
-    message = fail;
-  } else message = pass;
-  console.log(`\nYou got a${an} ${grade}%. ${message}`)
+  let passedMsg;
+  let passed;
+  if (grade < 80) { passed = false; } else true;
+  let correctMsg = `(${numberCorrect} of ${correctAnswers.length} responses correct)`
+  if (passed) {
+    passedMsg = "PASSED";
+  } else passedMsg = "FAILED";
+  console.log(`\n>>> Overall Grade: ${grade}% ${correctMsg} <<<\n>>> Status: ${passedMsg} <<<`)
 
   return grade;
 }
@@ -76,7 +75,7 @@ function runProgram() {
   // 1.1c: Greet candidate using their name //
   console.log(`Hello ${candidateName}`);
   askQuestions();
-  //console.log(candidateAnswers);
+  console.log(`\n\nCandidate Name: ${candidateName}`);
   gradeQuiz(this.candidateAnswers);
 }
 
